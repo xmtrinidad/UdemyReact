@@ -89,7 +89,7 @@ Typically there is only one ReactDOM.render() method used, the app/root componen
 
 From this component, all other components are nested.
 
-```javascript
+```jsx
 class App extends Component {
   render() {
     return (
@@ -130,14 +130,14 @@ Since the HTML in JSX isn't really HTML, some keywords would conflict with javas
 
 Another restriction to JSX is that it can only have one root element.  For example:
 
-```javascript
+```jsx
 <div className="App">
   <h1>Hi, I'm a React App</h1>
 </div>
 ```
 
 Is valid but adding another element at the bototm like so:
-```javascript
+```jsx
 <div className="App">
   <h1>Hi, I'm a React App</h1>
 </div>
@@ -159,7 +159,7 @@ Person.js
 ```
 
 3.  Use a javascript function to create a component using JSX and ES6.
-```javascript
+```jsx
 const person = () => {
     return <p>I'm a Person!</p>
 };
@@ -182,7 +182,7 @@ import Person from './Person/Person';
 ```
 
 7.  Add the component as an element into the App component
-```js
+```jsx
 <div className="App">
   <h1>Hi, I'm a React App</h1>
   <Person></Person>
@@ -191,7 +191,7 @@ import Person from './Person/Person';
 
 ## Outputting Dynamic Content
 To out put dynamic content, use curly braces:
-```js
+```jsx
 const person = () => {
     return <p>I'm a Person and I am {Math.floor(Math.random() * 30)} years old!!</p>
 };
@@ -200,13 +200,13 @@ const person = () => {
 ## Working with Props
 
 The component function can take *props* as an argument and properties can be attached to it:
-```js
+```jsx
 const person = (props) => {
     return <p>I'm {props.name} and I am {props.age} years old!!</p>
 };
 ```
 For this component, *name* and *age* are properties and can be used with components like so:
-```js
+```jsx
 <Person name="Xavier" age="28"></Person>
 <Person name="Mooky" age="30"></Person>
 <Person name="Leslie" age="28"></Person>
@@ -215,12 +215,12 @@ For this component, *name* and *age* are properties and can be used with compone
 ## Children Property
 
 The children property can be used to parse data from component declarations.  For example:
-```js
+```jsx
 <Person name="Mooky" age="30">My Hobbies: Breaking windows</Person>
 ```
 
 Without accessing the *children* property, 'My Hobbies: Breaking windows' would not be seen.  In order to display it on the screen, refactor the component to use *props.children*:
-```js
+```jsx
 const person = (props) => {
     return (
         <div>
@@ -248,7 +248,7 @@ state = {
 ```
 
 State can be accesed from the *render()* method and the component using the properties from state:
-```javascript
+```jsx
 <Person name={this.state.persons[0].name} age={this.state.persons[0].age}></Person>
 
 <Person name={this.state.persons[1].name} age={this.state.persons[1].name}>My Hobbies: Breaking windows</Person>
@@ -262,7 +262,7 @@ State can be accesed from the *render()* method and the component using the prop
 1.  Add *onClick* to the element.  Note that this on click is is camelcase, unlike regular javascript (onclick).  For JSX, onClick is used as a click handler.
 
 2.  Set *onClick* equal to the method you want to run, but don't include parenthesis.  Adding parenthesis would execute the function immediately.  By passing by reference, this won't happen
-```javascript
+```jsx
 <button onClick={this.switchNameHandler}>Switch Name</button>
 ```
 
@@ -277,7 +277,7 @@ switchNameHandler = () => {
 ## Manipulating the State
 
 Dont alter state directly:
-```js
+```jsx
 // DON'T DO THIS: this.state.persons[0].name = 'Javi';
 ```
 
@@ -298,12 +298,12 @@ switchNameHandler = () => {
 ## Passing Method References Between Components
 
 1.  Use on click on component element
-```js
+```jsx
 <p onClick={}>I'm {props.name} and I am {props.age} years old!!</p>
 ```
 
 2.  Inside the render() method in App.js, add a *click* property
-```js
+```jsx
 <Person
   click={this.switchNameHandler}
   name={this.state.persons[1].name} 
@@ -312,7 +312,7 @@ switchNameHandler = () => {
 ```
 
 3.  Update *onClick* attribute in component
-```js
+```jsx
 <p onClick={props.click}>I'm {props.name} and I am {props.age} years old!!</p>
 ```
 
@@ -320,13 +320,13 @@ switchNameHandler = () => {
 
 Uses a special event *onChange* which is fired whenever the value changes
 
-```js
+```jsx
 <input type="text" onChange={props.changed} value={props.name} />
 ```
 
 *props.changed* is passed down from the App.js file.  Inside the App.js file is where the logic for the two-way data binding would be defined
 
-```js
+```javascript
 nameChangedHandler = (event) => {
     this.setState({
       persons: [
@@ -340,7 +340,7 @@ nameChangedHandler = (event) => {
 
 To use the *nameChangedHandler()* method, use it as a component attribute:
 
-```html
+```jsx
 <Person
   changed={this.nameChangedHandler}
 </Person>
@@ -356,7 +356,7 @@ To use the *nameChangedHandler()* method, use it as a component attribute:
     }
   ```
 3.  Inside the component javascript file, import the CSS file
-```js
+```javascript
 import './Person.css';
 ```
 
@@ -365,7 +365,7 @@ import './Person.css';
 Sometimes in React apps, style are defind using JavaScript
 
 Define a const variable to hold your styles and place it below *render()* function and assign values then add a *style* property to the element that will use the defined styles
-```js
+```jsx
 render() {
   const style = {
     backgroundColor: 'white',
