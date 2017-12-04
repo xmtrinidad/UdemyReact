@@ -19,6 +19,7 @@
 [Working with Inline Styles](#working-with-inline-styles)   
 
 **Practice Projects**
+
 | Link          | Description   |
 | ------------- | ------------- |
 |[Stack Blitz](https://stackblitz.com/edit/basic-react-components)| Practicing basic components with state |
