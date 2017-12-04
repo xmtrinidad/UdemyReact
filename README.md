@@ -16,6 +16,6 @@ Checkout my [trello board](https://trello.com/b/tMJsPCtK) for daily progress upd
 | [Section One: Getting Started](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%20One%20-%20Getting%20Started/Getting_Started.md) |
 | [Section Two: Next Generation Javascript]() |
 | [Section Three: Understanding the Base Features & Syntax](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%20Three%20-%20Understanding%20the%20base%20Features%20%26%20Syntax/notes.md) |
-| [Section Four: Next Generation Javascript](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%20Four%20-%20Working%20with%20Lists%20and%20Conditionals/notes.md) |
+| [Section Four: Working with Lists and Conditionals](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%20Four%20-%20Working%20with%20Lists%20and%20Conditionals/notes.md) |
 
 
