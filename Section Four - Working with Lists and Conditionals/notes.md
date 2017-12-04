@@ -66,7 +66,7 @@ In this module:
 
 
 4. Unlike in Angular where directives such as **ngIf* are used, React uses JSX so hiding/showing content uses JavaScript syntax.  Wrapping the ```<div>``` of the conditional block in brackets would be valid javascript code:
-    ```js
+    ```jsx
     {<div>
         <Person 
           name={this.state.persons[0].name} 
@@ -85,7 +85,7 @@ In this module:
     </div>}
     ```
 5.  An *if* statement will not work in this situtation, but using a ternary expression does work
-  ```js
+  ```jsx
     {
       this.state.showPersons ? 
         <div>
@@ -107,7 +107,7 @@ In this module:
     }
   ```
 6.  Set logic in toggle method:
-  ```js
+  ```jsx
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
     this.setState({showPersons: !doesShow});
@@ -121,7 +121,7 @@ The above method of hiding/showing data conditionally isn't optimal.  It can be 
 There is a cleaner way:
 
 1.  Don't use curly braces like in the previous example and start with the base jsx:
-  ```js
+  ```jsx
   <div>
     <Person 
       name={this.state.persons[0].name} 
@@ -142,7 +142,7 @@ There is a cleaner way:
 
 2.  When React renders something to the screen or decides to update the screen it executes the render() method.  Inside the *render()* method is where the conditional statements will be defined.  
 
-  ```js
+  ```jsx
   let persons = null;
 
   if (this.state.showPersons) {
@@ -170,7 +170,7 @@ There is a cleaner way:
   By default *persons* is null.  If *this.state.showPersons* is true, *persons* is set to the jsx code
 
 3.  Inside the return statement, place the *persons* variable inside the jsx:
-  ```js
+  ```jsx
   return (
     <div className="App">
       <h1>Hi, I'm a React App</h1>
