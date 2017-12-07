@@ -1,4 +1,4 @@
-# Working with Lists and Conditionals
+# Section Four - Working with Lists and Conditionals
 
 In this module:
 * How to output content conditionally
@@ -20,6 +20,7 @@ In this module:
 | --------------- | ----------- |
 | [Stack Blitz](https://stackblitz.com/edit/show-hide-conditional) | Practicing Conditional Statements |
 | [Stack Blitz](https://stackblitz.com/edit/map-and-add) | Practice with map() to create components |
+| [Stack Blitz](https://stackblitz.com/edit/section-four-practice) | Practicing several concepts from this section |
 
 ## Rendering Content Conditionally
 
@@ -410,3 +411,8 @@ nameChangedHandler = (event, id) => {
 }
 ```
 
+## Section Project
+
+The readme for the section project can be found [here]().
+
+Project: [Verb List](https://stackblitz.com/edit/section-four-practice)
