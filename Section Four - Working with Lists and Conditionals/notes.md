@@ -11,6 +11,8 @@ In this module:
 [Outputting Lists](#outputting-lists)    
 [Lists and State](#lists-and-state)    
 [Updating State Immutably](#updating-state-immutably)    
+[Lists And Keys](#lists-and-keys)    
+[Flexible Lists](#flexible-lists)    
 
 **Practice Projects**
 
@@ -320,3 +322,91 @@ deletePersonHandler = (personIndex) => {
 }
 ```
 Keep in mind that *state* should always be updated in immutably.
+
+## Lists And Keys
+
+The previous implementation of deleting list items throws a warning in the console because the items are missin a "unique 'key' prop"
+
+The 'key' prop is an important prop that should be added when rendering lists of data.  The *key* property helps React update the DOM efficiently.
+
+```jsx
+<div>
+  {this.state.persons.map((person, index) => {
+    return <Person 
+      click={() => this.deletePersonHandler(index)}
+      name={person.name} 
+      age={person.age}
+      key={person.id} />
+  })}
+</div>
+```
+
+```jsx
+state = {
+  persons: [
+    { id: 'adfs', name: 'Xavier', age: 28 },
+    { id: 'f31', name: 'Mooky', age: 30 },
+    { id: 'aaf3', name: 'Leslie', age: 28 },
+  ],
+  otherState: 'some other value',
+  showPersons: false
+}
+```
+
+After refactoring with the above code, each Person component rendered has a unique ID and the warning no longer appears in the console.
+
+## Flexible Lists
+
+Now that each item has an ID, they can be updated dynamically to make a truly flexible list.
+
+```jsx
+<input type="text" onChange={props.changed} value={props.name} />
+```
+
+In the above example, every input value is bound to a property along with an onChange attribute that executes a function as the input is updated.
+
+The *changed* property needs to point to an event or method that dynamically updates the state
+
+The App component would look something like this before implementing the change method:
+```jsx
+<div>
+  {this.state.persons.map((person, index) => {
+    return <Person 
+      changed={(event) => this.nameChangedHandler(event, person.id)} />
+  })}
+</div>
+```
+
+*nameChangedHandler()* needs to take in an event and an id to know which item is being updated.
+
+The overall function ```(event) => this.nameChangedHandler()``` is what gets called as the value is updated.  The event is then passed into the *nameChangedHandler()* function as well as the id of the item being updated:
+
+```(event) => this.nameChangedHandler(event, person.id)```
+
+This information is used within the *nameChangedHandler()* method:
+
+```jsx
+nameChangedHandler = (event, id) => {
+  
+  // Get index of item by id passed in
+  const personIndex = this.state.persons.findIndex(p => {
+    return p.id === id;
+  });
+
+  //  Make copy of the object to keep original state from being affected
+  const person = {
+    ...this.state.persons[personIndex]
+  }
+
+  // Update the person name based on the value from the event target
+  person.name = event.target.value;
+
+  // Create a copy of the state
+  const persons = [...this.state.persons];
+  persons[personIndex] = person;
+
+  // Set state with updated copy
+  this.setState( {persons: persons} );
+}
+```
+
