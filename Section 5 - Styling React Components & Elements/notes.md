@@ -11,6 +11,7 @@ This section will cover dynamically adjusting styles and working around various 
 [Setting Class Names Dynamically](#setting-class-names-dynamically)       
 [Adding and Using Radium](#adding-and-using-radium)       
 [Using Radium for Media Queries](#using-radium-for-media-queries)     
+[Enabling and Using CSS Modules](#enabling-and-using-css-modules)     
 [Adding Pseudo Selectors](#adding-pseudo-selectors)       
 [Working with Media Queries](#working-with-media-queries)       
 
@@ -127,6 +128,130 @@ In the above example, using the *:hover* pseudo class needs to be wrapped in quo
 
 ## Using Radium for Media Queries
 
+To add inline-style media queries, Raidum has to be used.  There are a few things that need to be added to the overall App component before they will take effect:
+
+First, add the style constant to the component using the media query:
+```jsx
+const style = {
+    // Remember to use quotes to keep the syntax valid
+    '@media (min-width: 500px)': {
+        width: '450px'
+    }
+};
+```
+
+Next, add the style constant to the component:
+```jsx
+<div className="Person" style={style}>
+    // ...
+</div>
+```
+
+At this point, an error will occur:
+```
+Uncaught Error: To use plugins requiring 'addCSS' (e.g. keyframes, media queries), please wrap your application in the StyleRoot component.
+```
+
+*StyleRoot* is a Radium component and, when applying media queries using Radium, needs to be wrapped around the overall App component.
+
+Before the StyleRoot component can be used, it needs to be imported:
+```jsx
+import Radium, { StyleRoot } from 'radium';
+```
+
+Now the entire App component can be wrapped with the StyleRoot component:
+```jsx
+<StyleRoot>
+    <div className="App">
+        
+        // ...other components
+
+    </div>
+</StyleRoot>
+```
+
+With StyleRoot added, the media query inside the component should work.
+
+## Enabling and Using CSS Modules
+
+*This section doesn't use Radium.  Remove it and any components and imports associated with it if they are implemented within the App.*
+
+Another way of scoping CSS files that doesn't require Radium (which is for inline-styles) would be through the use of CSS Modules.
+
+Using CSS Modules would allow styles to be imported and assigned to any JSX elements and wouldn't override other styles even if they share the same class names with other elements in the App.
+
+The following steps outline how to enable CSS modules:
+
+1.  The build configuration of the project needs to be changed.  Using the ```npm run eject`` command to allow access to the underlying configuration files that React uses.
+
+    *Enabling access to the configuration files doesn't break the application, but editing files should be handled with care as any changes can introduce errors.*
+
+2.  Two new folders are now available, *scripts* and *config*.  The webpack config inside the config folder is what will be used to enable CSS modules.
+
+3.  Inside the *webpack.config.dev.js* file, scroll down to module then search for the .css extension.  It will look like ```test: /\.css%/``` and have several other properties associated with it.
+
+4.  Within this extension, there is an *options* property that will be edited
+```js
+test: /\.css$/,
+    use: [
+        require.resolve('style-loader'),
+        {
+            loader: require.resolve('css-loader'),
+            options: {
+                importLoaders: 1,
+                modules: true, // Add this
+                localIdentName: '[name]__[local]__[hash:base64:5]' // Add this
+            },
+        }
+```
+
+```modules: true``` and ```localIdentName: '[name]__[local]__[hash:base64:5]'``` need to be added
+
+5.  Inside the *webpack.config.prod.js* folder the same config from above needs to be applied, but don't override *minimize* or *sourceMap*:
+```js
+test: /\.css$/,
+    use: [
+        require.resolve('style-loader'),
+        {
+        loader: require.resolve('css-loader'),
+        options: {
+            importLoaders: 1,
+            modules: true,
+            localIdentName: '[name]__[local]__[hash:base64:5]'
+        },
+    }
+```
+
+6.  With this config now in place, classes from a CSS file can be imported into a component
+```js
+import classes from  './App.css';
+```
+*classes* can be any name.  It refers to all the classes in the component CSS file.
+
+7.  The CSS class from the imported CSS file can be used using Object syntax: 
+```js
+<div className={classes.App}>
+
+</div>
+```
+*App* is the name of the CSS class and any styles defind within the CSS file with the class of *.App* will be applied to the element.
+
+8.  Restart the application to apply configuration
+
+Using CSS modules will make CSS component files truly unique and prevent errors from other components containing the same class name.
+
 ## Adding Pseudo Selectors
 
+Using CSS Modules, the component CSS files can be used along with normal CSS syntax.  Class styles can be applied the same way that inline styles were used with Radium:
+
+```jsx
+<button 
+    className={btnClass}>Toggle Persons
+</button>
+```
+
+*btnClass* would be defined using the import ```btnClass = classes.Red;```
+
 ## Working with Media Queries
+
+As before, using CSS modules allows the use of regular CSS files and syntax.  Simply adding a media query to the class being affected, then using the class in the component will make the media query work.
