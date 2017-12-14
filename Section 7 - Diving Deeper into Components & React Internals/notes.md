@@ -7,6 +7,8 @@ Components are the core building block of the React library.  This section will 
 [A Better Project Structure](#a-better-project-structure)       
 [Comparing Stateless and Stateful Components](#comparing-stateless-and-stateful-components)       
 [Understanding the Component Lifecycle](#understanding-the-component-lifecycle)       
+[Component Updating Lifecycle Hooks](#component-updating-lifecycle-hooks)       
+[Component Lifecycle Update Internal Change](#component-lifecycle-update-internal-change)       
 
 ## A Better Project Structure
 
@@ -116,3 +118,52 @@ In other words, the render() method prepares and structures JSX code.
 After the render() method executes and it renders any child components, *componentDidMount()* will execute, signaling that the component was successfully mounted.
 
 At this point, Side-Effects can be introduced (make an API request, for example).  What you shouldn't do in this method is update State because it would trigger a re-render.
+
+## Component Updating Lifecycle Hooks
+
+Updating lifecycle hooks has two different types: updating by the parent (changing props) and internally triggered updates (changing state).  This section covers Lifecycle Hook Methods triggered by changing props (parent).
+
+### componentWillReceiveProps(nextProps)
+
+This method can synchronize local state of the component to the props.  Dont cause side-effect in this method
+
+### shouldComponentUpdated(nextProps, nextState)
+
+*nextProps* and *nextState* refers to the upcoming props and state.
+
+This method can cancel the updating process; if *true* is returned here the updating continues and if *false* is returned the updating stops.
+
+Dont cause Side-Effects in this method
+
+### componentWillUpdate(nextProps, nextState)
+
+Sync state to props; dont cause Side-Effects
+
+This method is better to syn state to props because if this method is executed it means it passed the shouldComponentUpdate() method and will update for sure.  Synching state to propls in any methods before could be a waste of resources because the component may not update in the end.
+
+### render() and update child components props
+
+Prepare and structure JSX code
+
+### componentDidUpdate()
+
+Here Side-Effects can be introduced, but don't update state or it will trigger a re-render.
+
+## Component Lifecycle Update Internal Change
+
+These are changes from *setState*
+
+### shouldComponentUpdate(nextProps, nextState)
+
+Updating process can be cancelled here.  Don't introduce Side Effects.
+
+### componentWillUpdate
+
+Sync state to props, no Side Effects
+
+### render() and update child components
+
+Prepare and structure JSX code
+
+### componentDidUpdate()
+
