@@ -9,6 +9,9 @@ Components are the core building block of the React library.  This section will 
 [Understanding the Component Lifecycle](#understanding-the-component-lifecycle)       
 [Component Updating Lifecycle Hooks](#component-updating-lifecycle-hooks)       
 [Component Lifecycle Update Internal Change](#component-lifecycle-update-internal-change)       
+[Performance Gains With PureComponents](#performance-gains-with-pureComponents)       
+[How React Updates the App and Component Tree](#how-react-updates-the-app-and-component-tree)       
+[Understanding React's DOM Updating Strategy](#understanding-reacts-dom-updating-strategy)       
 
 ## A Better Project Structure
 
@@ -166,4 +169,30 @@ Sync state to props, no Side Effects
 Prepare and structure JSX code
 
 ### componentDidUpdate()
+
+## Performance Gains With PureComponents
+
+With regular Components, executing many render() methods could be inefficient.  In many cases, render() methods will execute even if the DOM isn't updated.
+
+One way to prevent re-rendering of child nodes is through the *shouldComponentUpdate()* method, where true or false could be returned based on a condition.  For example, if there is no change to the state, the render() methods should not be executed.
+
+Another appraoch to checking if state or props was changed is through the use of *PureComponents*
+```jsx
+import React { PureComponent } from 'react';
+```
+
+The main difference between a regular Component and PureComponent is that PureComponents already have the *shouldComponentUpdate()* check already built-in.  It'll compare state/propls with their old versions and only update and execute render() methods if there was a change.
+
+## How React Updates the App and Component Tree
+
+Updating happens from top to bottom and only when state or props change.  With this in mind, using containers to check for updates is a best practice.  With this appraoch, containers can be monitored for changes and, if no changes occur, prevent updates to child components.
+
+## Understanding React's DOM Updating Strategy
+
+When the *render()* method is called it doesn't immediately render the JSX to the real DOM.  It's more like a suggestion of what the HTML should look like.  The end result of the render() method could lead to no change in the actual DOM.  For this reason, the preceding *shouldComponentUpdate()* method is used to prevent unnecessary render() calls.
+
+What render() does is compare Virtual DOMs.  It has an Old Virtual DOM and a Re-rendered Virtual DOM.  Using this Virtual DOM approach is faster than the real DOM.
+
+A "virtual" DOM is a DOM representation in JavaScript.  The Re-rendered Virtual DOM is the one that gets created when the render() method is called.  Again, the render() method doesn't automatically update the real DOM.  Instead, React makes a comparison between the Re-rendered Virtual DOM and the Old Virtual DOM.  If there are any differences, React will update the real DOM only in the places where changes were detected.
+
 
