@@ -12,6 +12,8 @@ Components are the core building block of the React library.  This section will 
 [Performance Gains With PureComponents](#performance-gains-with-pureComponents)       
 [How React Updates the App and Component Tree](#how-react-updates-the-app-and-component-tree)       
 [Understanding React's DOM Updating Strategy](#understanding-reacts-dom-updating-strategy)       
+[Understanding Higher Order Components](#understanding-higher-order-components)       
+[Using setState Correctly](#using-setstate-correctly)       
 
 ## A Better Project Structure
 
@@ -195,4 +197,86 @@ What render() does is compare Virtual DOMs.  It has an Old Virtual DOM and a Re-
 
 A "virtual" DOM is a DOM representation in JavaScript.  The Re-rendered Virtual DOM is the one that gets created when the render() method is called.  Again, the render() method doesn't automatically update the real DOM.  Instead, React makes a comparison between the Re-rendered Virtual DOM and the Old Virtual DOM.  If there are any differences, React will update the real DOM only in the places where changes were detected.
 
+## Returning Adjacent Elements Using Fragments
+
+Components usually have a wrapping element with several child elements:
+```jsx
+<div className={classes.Person}>
+    <p onClick={props.click}>I'm {props.name} and I am {props.age} years old!!</p>
+    <p>{props.children}</p>
+    <input type="text" onChange={props.changed} value={props.name} />
+</div>
+```
+
+Prior to React 16 multiple elements couldn't sit next to each other without the wrapping div element.  For example:
+```jsx
+<p onClick={props.click}>I'm {props.name} and I am {props.age} years old!!</p>
+<p>{props.children}</p>
+<input type="text" onChange={props.changed} value={props.name} />
+```
+
+Would not work.  There are some exceptions, such as returning an array of elements:
+```jsx
+const persons = (props) => props.persons.map( (person, index) => {
+    return <Person 
+        click={() => props.clicked(index)}
+        name={person.name} 
+        age={person.age}
+        key={person.id}
+        changed={(event) => props.changed(event, person.id)} />
+});
+```
+
+The above syntax is returns an array of ```<Person />``` elements.  If an array of elements is returned, each element needs a *key* property.
+
+With React 16.2, elements not using an array can use *Fragments* to wrap single elements without the need for a wrapping div.
+```jsx
+<>
+    <h1>First Element</h1>
+    <h2>Second Element</h2>
+</>
+```
+
+Behind the scenes, Fragments are Higher Order Components that wrap the single elements.
+
+## Understanding Higher Order Components
+
+A HOC was used in [Section 5 - Styling React Components & Elements](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%205%20-%20Styling%20React%20Components%20%26%20Elements/notes.md#using-radium-for-media-queries) when using the 3rd party package Radium.  The ```<StyleRoot></StyleRoot>``` element was used to wrap the ```<App />``` component in order for Radium to apply its styles to the application.
+
+HOCs have a certain logic written within them.  When wrapping another component within an HOC, only that child component is affected with the logic from the HOC.  If there are multiple components that need the logic from the HOC, but several components that don't then HOCs are a good technique to use to only apply certain logic to those components that need it.
+
+## Using setState Correctly
+
+Besides updating state in an immutable way, there are a few other things to keep in mind regarding state.
+
+If there is a state update that depends on the old state, there is a good way and bad way of updating it.  Take the example of updating a clicked count in state:
+
+```js
+this.state = {
+    clicked: 0
+}
+```
+
+A function that updates the clicked state on a button click could look like this:
+```jsx
+updateClicked = () => {
+    this.setState({
+        clicked: this.state.clicked + 1
+    });
+}
+```
+
+Using React dev tools, it would appear to work correctly but it isn't the right way to do it because the *setState()* method is executed asynchronously.  Calling *this.state* within setState() is unreliable because other setState() methods could finish before the updated clicked setState().  If this was the case, *this.state* wouldn't be reflected properly.
+
+In this situation the functional form of this.setState() should be used.
+```jsx
+this.setState( (prevState, props) => {
+    return {
+        clicked: prevState.clicked + 1
+    }
+});
+```
+Instead of *this.state*, the *prevState* argument is used.  *prevState* is the true previous state and it's immutable, so any changes made to setState in other methods will not affect it.
+
+Although the bad appraoch works, the best practice of mutating state that relies on the previous state is to use the function form of setState() and the *prevState* argument.
 

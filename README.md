@@ -17,5 +17,8 @@ Checkout my [trello board](https://trello.com/b/tMJsPCtK) for daily progress upd
 | [Section Two: Next Generation Javascript]() |
 | [Section Three: Understanding the Base Features & Syntax](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%20Three%20-%20Understanding%20the%20base%20Features%20%26%20Syntax/notes.md) |
 | [Section Four: Working with Lists and Conditionals](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%20Four%20-%20Working%20with%20Lists%20and%20Conditionals/notes.md) |
+| [Section Five: Styling React Components](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%205%20-%20Styling%20React%20Components%20%26%20Elements/notes.md) |
+| [Section Six: Debugging React Apps](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%206%20-%20Debugging%20React%20Apps/notes.md) |
+| [Section Seven: Diving Deeper into Components & React Internals](https://github.com/xmtrinidad/UdemyReact/blob/master/Section%207%20-%20Diving%20Deeper%20into%20Components%20%26%20React%20Internals/notes.md) |
 
 
